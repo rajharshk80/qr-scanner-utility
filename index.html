@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Scanner Utility</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        h2 {
+            color: #333;
+        }
+        #reader {
+            width: 100%;
+            max-width: 400px;
+            margin: 20px auto;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #007bff;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>QR Scanner Utility</h2>
+    <div id="reader"></div>
+    <div id="result">Scan a QR code to see the result</div>
+
+    <!-- html5-qrcode library CDN -->
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <script src="script.js"></script>
+</body>
+</html>
