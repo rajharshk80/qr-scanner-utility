@@ -2,40 +2,178 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QR Scanner Utility</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pro QR Scanner | Modern Utility</title>
+    <!-- Modern Fonts (Poppin) -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            text-align: center;
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --glass-bg: rgba(255, 255, 255, 0.9);
+            --text-color: #333;
+            --accent-color: #764ba2;
+            --success-color: #28a745;
+        }
+
+        * {
+            box-sizing: border-box;
             margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: var(--primary-gradient);
+            display: flex;
+            justify-content: center;
+            align-items: center;
             padding: 20px;
+            color: var(--text-color);
         }
-        h2 {
-            color: #333;
+
+        .app-container {
+            width: 100%;
+            max-width: 420px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            padding: 30px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
+
+        /* Header */
+        .header-content h1 {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--accent-color);
+            margin-bottom: 5px;
+        }
+        .header-content p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* Scanner Box - Modern Glassmorphism */
         #reader {
             width: 100%;
-            max-width: 400px;
-            margin: 20px auto;
-            border: 2px solid #ccc;
-            border-radius: 8px;
+            aspect-ratio: 1/1; /* Square shape for scanner */
+            border: none;
+            border-radius: 16px;
             overflow: hidden;
+            background: rgba(0,0,0,0.05);
+            position: relative;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
         }
+
+        /* Styling library elements (Video tag inside #reader) */
+        #reader video {
+            object-fit: cover;
+            border-radius: 16px;
+        }
+
+        /* Result Box */
+        #result-box {
+            background: #f8f9fa;
+            border-radius: 16px;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-height: 60px;
+            transition: all 0.3s ease;
+        }
+
+        #result-box.scanned {
+            background: #d4edda;
+            border-color: #c3e6cb;
+        }
+
+        #result-icon {
+            font-size: 20px;
+            color: #888;
+        }
+        #result-box.scanned #result-icon {
+            color: var(--success-color);
+        }
+
         #result {
-            margin-top: 20px;
-            font-size: 18px;
-            color: #007bff;
+            font-size: 15px;
+            color: #555;
             word-break: break-all;
+            text-align: left;
+            line-height: 1.4;
         }
+        
+        /* Placeholder text style */
+        #result.placeholder {
+            color: #aaa;
+            font-style: italic;
+        }
+
+        /* Footer Button (Optional) */
+        .action-btn {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 12px 20px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.1s ease;
+            display: none; /* Hidden by default, shown via JS for camera control */
+        }
+
+        .action-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Loading state for library */
+        #reader__scan_region {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #666;
+            font-size: 14px;
+        }
+
     </style>
 </head>
 <body>
 
-    <h2>QR Scanner Utility</h2>
-    <div id="reader"></div>
-    <div id="result">Scan a QR code to see the result</div>
+    <div class="app-container">
+        <div class="header-content">
+            <h1><i class="fas fa-qrcode"></i> Pro QR Scanner</h1>
+            <p>Point your camera at a QR code to scan</p>
+        </div>
+
+        <div id="reader">
+            <!-- Loading text will be replaced by the library -->
+            <div id="reader__scan_region">
+                <i class="fas fa-camera fa-2x"></i> <br>
+                Initializing Camera...
+            </div>
+        </div>
+
+        <div id="result-box">
+            <div id="result-icon"><i class="fas fa-fingerprint"></i></div>
+            <div id="result" class="placeholder">Scan result will appear here...</div>
+        </div>
+
+        <!-- Example: Action Button (Hidden by default) -->
+        <button id="openLinkBtn" class="action-btn" onclick="openScannedLink()">
+            <i class="fas fa-external-link-alt"></i> Open Link
+        </button>
+    </div>
 
     <!-- html5-qrcode library CDN -->
     <script src="https://unpkg.com/html5-qrcode"></script>
