@@ -43,11 +43,11 @@ function onScanFailure(error) {
 // Initialize Scanner
 let html5QrcodeScanner = new Html5QrcodeScanner(
     "reader", 
-    { 
-        fps: 10,            # Frame per second - smoother scan
-        qrbox: { width: 220, height: 220 }, # Scanning area hint
-        aspectRatio: 1.0,   # Ensures camera feed is square
-        showTorchButtonIfAvailable: true # Adds flash/light button if camera supports
+ { 
+        fps: 10,            // Frame per second - smoother scan
+        qrbox: { width: 220, height: 220 }, // Scanning area hint
+        aspectRatio: 1.0,   // Ensures camera feed is square
+        showTorchButtonIfAvailable: true // Adds flash/light button if camera supports
     },
     /* verbose= */ false
 );
